@@ -59,8 +59,8 @@ public class ConvertData {
 	        int mac_int = Integer.valueOf(mac, 16).intValue();
 	        ip = data.substring(3, 7);
 	        String message = date +": Sensor " + mac+" with Ip:" + ip + " has joined network!";
-	        Message greeting = new Message(user, message, date);
-	        DataSensor dataSensor = new DataSensor(user, data, date, mac, ip, 0, 0, 1);
+	        Greeting greeting = new Greeting(user, message, date);
+	        DataSensor dataSensor = new DataSensor(user, data, date, mac, ip, 0, 0, "01");
 			try {
 				pm.makePersistent(dataSensor);
 				pm.makePersistent(greeting);
@@ -141,11 +141,9 @@ public class ConvertData {
 	        Sensor.temperature = temp;
 	        Sensor.humidity = humi;
 	        Sensor.energy = ener;
-	        String message = date +": Temperature - Humidity Message! Sensor: " + mac+" with Ip:" + ip + " Temperature: "+ temp +" Humidity: "+humi;
-	        Message grt = new Message(user, message, date);
-			DataSensor dataSensor = new DataSensor(user, data, date, mac, ip, temp, humi, 1);
-			pm.makePersistent(dataSensor);
-			pm.makePersistent(grt);
+	        
+			DataSensor dataSensor = new DataSensor(user, data, date, mac, ip, temp, humi, "01");
+			pm.makePersistent(dataSensor);			
 		}
 		catch(Exception ex) {System.out.println(ex.toString());}
 	}

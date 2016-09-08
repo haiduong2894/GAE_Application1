@@ -11,7 +11,19 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.users.User;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class DataSensor extends Message{ 
+public class DataSensor {   
+	 @PrimaryKey
+	    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	    private Long id;
+
+	    @Persistent
+	    private User author;
+
+	    @Persistent
+	    private String content;
+
+	    @Persistent
+	    private Date date;
     @Persistent
     private String mac;
     
@@ -25,10 +37,13 @@ public class DataSensor extends Message{
     private float humid;
     
     @Persistent
-    private int status;
+    private String status;
     
-    public DataSensor(User author, String content, Date date, String mac, String ip, float temp, float humid, int status) {
-    	super(author, content, date);
+    public DataSensor(User author, String content, Date date, String mac, String ip, float temp, float humid, String status) {
+    	//super(author, content, date);
+    	this.author = author;
+    	this.content = content;
+    	this.date = date;
         this.mac = mac;
         this.ip = ip;
         this.temp = temp;
@@ -48,7 +63,7 @@ public class DataSensor extends Message{
     public float getHumid() {
         return humid;
     }
-    public int getStatus(){
+    public String getStatus(){
     	return status;
     }
     public void setMac(String mac) {
@@ -67,11 +82,11 @@ public class DataSensor extends Message{
         this.humid = humid;
     }
     
-    public void setStatus(int status){
+    public void setStatus(String status){
     	this.status = status;
     }
     
-    /*public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -97,5 +112,5 @@ public class DataSensor extends Message{
 
     public void setDate(Date date) {
         this.date = date;
-    }*/
+    }
 }

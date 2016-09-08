@@ -9,7 +9,7 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.users.User;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public abstract class Greeting {
+public class Greeting {
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Long id;
@@ -19,13 +19,13 @@ public abstract class Greeting {
 
     @Persistent
     private String content;
-    
 
     @Persistent
     private Date date;
 
-    public Greeting(User author, Date date) {
+    public Greeting(User author, String content, Date date) {
         this.author = author;
+        this.content = content;
         this.date = date;
     }
 
@@ -37,12 +37,20 @@ public abstract class Greeting {
         return author;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public Date getDate() {
         return date;
     }
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public void setDate(Date date) {
