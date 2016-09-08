@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- The HTML 4.01 Transitional DOCTYPE declaration-->
+<!-- above set at the top of the file will set     -->
+<!-- the browser's rendering engine into           -->
+<!-- "Quirks Mode". Replacing this declaration     -->
+<!-- with a "Standards Mode" doctype is supported, -->
+<!-- but may lead to some differences in layout.   -->
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>HaiDuong</title>
+  </head>
+  <body>
+  
+  <h1 align="center" style="bottom: 100%"><img src="fightGhost.jpg"></h1> 
+    <h1 align="center">WSAN LAB411 - Hello App Engine!</h1>
+	
+    <table align="center">
+      <tr>
+        <td colspan="2" style="font-weight:bold;">Available Servlets:</td>        
+      </tr>
+      <tr>
+        <td><a href="gae_application1">GAE_Application1</a></td> 
+      </tr>
+      
+      <tr>
+      	<td> <textarea rows="3px" cols="100%" id="textArea" >Data received</textarea> </td>
+      	<td> <button onclick="btnSend_Click()" id="btnSend" type="button" >Send</button></td>
+      	<script>
+      	function btnSend_Click() {
+      	  var xhttp = new XMLHttpRequest();
+      	  xhttp.onreadystatechange = function() {
+      	    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      	    document.getElementById("btnSend").innerHTML = xhttp.responseText;
+      	    }
+      	  };
+      	  //xhttp.open("GET", "http://lab411s.esy.es/sg/rx.php?data="+document.getElementById("textArea").value, true);
+      	  /* xhttp.open("GET", "http://localhost:8888/Process.jsp?data="+document.getElementById("textArea").value, true);
+      	  xhttp.send(); */
+      	}
+      	</script>
+      </tr>
+    </table> 
+    <div align="center" style="border-color: blue;" id="dataArea">Data...</div>	   
+    </body>
+    <body>
+    <table align="center">
+    <tr>
+    <td><form action="/sign" method="get">
+				<div><input type="text" name="id" >
+				<input type="text" name="data" >
+				<input type="submit" value="Post Greeting"></div>
+		</form>
+		</td>
+    	
+    </tr>
+    <tr>
+    	<td>
+	    	<form action="/command" method="get">
+	    		<div><input type="text" name="command">
+	    			<input type="submit" value="Send command to Webserver" /> </div>
+	    	</form>
+    	</td>
+    </tr>
+    </table>
+	    
+    
+    </body>
+</html>
