@@ -21,7 +21,7 @@
 	<table border="1" id="tableData">
 		<tr colspan="2" style="font-weight:bold;"><td>ID</td><td>Date Time</td><td>IP</td><td>MAC</td><td>Temperature(*C)</td><td>Humidity(%)</td></tr>
 		<% for (DataSensor data : dataSensors) {
-				if(data.getStatus() == "01"){
+				  if(data.getStatus().equals("01")){
 		%>
 				
 					<tr><td><%=data.getId() %></td><td><%=data.getDate() %></td><td><%=data.getIp() %></td><td><%=data.getMac() %></td><td><%=data.getTemp() %></td><td><%=data.getHumid() %></td></tr>

@@ -1,39 +1,75 @@
 package com.haiduong.gaeapplication.Gateway;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Sensor extends Node {
+	@PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Long id;
 	/// <summary>
     /// Nhiet do cua sensor
     /// </summary>
-	public static float temperature;
+	@Persistent
+	private float temperature;
 
     /// <summary>
     /// Do am cua sensor
     /// </summary>
-    public static float humidity;
+	@Persistent
+   private float humidity;
 
     /// <summary>
     /// Nang luong cua sensor
     /// </summary>
-    public static float energy;
+	@Persistent
+    private float energy;
+	
+	@Persistent
+	private String domain;
 
     /// <summary>
     /// Trang thai cua sensor
     /// </summary>
-    public static String stateSensor;
-
-    /// <summary>
-    /// Tra ve loi khi bat loi
-    /// </summary>
-    public String ERR = null;
-
-    /// <summary>
-    /// Doi tuong ve co so du lieu
-    /// </summary>
-    //public Database db;
     
-    
-    public Sensor(){
+    public Sensor(String mac, String ip,boolean active, float temp, float humid, float ener){
+    	super(mac, ip, active);
+    	this.temperature = temp;
+    	this.humidity = humid;
+    	this.energy = ener;    		
     	
+    }
+    
+    public float getTemp(){
+    	return temperature;
+    }
+    public void setTemp(float temp) {
+        this.temperature = temp;
+    }
+    
+    public float getHumid(){
+    	return humidity;
+    }
+    public void setHumid(float humid) {
+        this.temperature = humid;
+    }
+    
+    public float getEner(){
+    	return energy;
+    }
+    public void setEner(float ener) {
+        this.energy = ener;
+    }
+    
+    public String getDomain(){
+    	return domain;
+    }
+    public void setMac(String domain) {
+        this.domain = domain;
     }
     /// <summary>
     /// Tao lenh lay du lieu nhiet do, do am cac sensor
@@ -52,6 +88,8 @@ public class Sensor extends Node {
             return null;
         }
     }
+    
+    
   /// <summary>
     /// mang luu cac doan du lieu anh
     /// </summary>

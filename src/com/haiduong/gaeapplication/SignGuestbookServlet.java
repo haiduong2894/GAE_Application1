@@ -25,7 +25,7 @@ public class SignGuestbookServlet extends HttpServlet {
 		String id = req.getParameter("id");
 		Date date = new Date();
 		String data = req.getParameter("data");
-		String header = req.getParameter("data").substring(0,3);
+		String header = req.getParameter("data").substring(0,2);
 		ConvertData conv = new ConvertData(req); 
 		outText.println("Id:"+id+"\r\nData:"+data);
 		outText.println("User:"+user);
@@ -34,17 +34,23 @@ public class SignGuestbookServlet extends HttpServlet {
 		
 		switch (header){
 		///////////////////////////////////////////////////////////
-		case "RD:":
+		case "RD":
 			conv.convertDataRD();
 			break;
-		case "AD:":
+		case "AD":
 			conv.convertDataRD();
 			break;
-		case "JN:":
+		case "JN":
 			try{
 				conv.convertDataJoinNetwork();
 			}
 			catch(Exception ex){}
+			break;
+		case "SN":
+			conv.convertStateSensor();
+			break;
+		case "VL":
+			conv.convertInformationSleep();
 			break;
 		///////////////////////////////////////////////////////////////////////
 		default:			

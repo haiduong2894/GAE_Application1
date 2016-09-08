@@ -8,12 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.apphosting.utils.config.ApplicationXml.Modules.Web;
 import com.haiduong.gaeapplication.Gateway.Actor;
 import com.haiduong.gaeapplication.Gateway.Node;
 import com.haiduong.gaeapplication.Gateway.Sensor;
+import com.sun.java.swing.plaf.windows.resources.windows;
+import com.sun.java.swing.plaf.windows.resources.windows_zh_CN;
 
 public class ConvertData {
 	HttpServletRequest req;
+	String mac, ip,stateSensor;
+	float temp, humi, ener;
 	UserService userService = UserServiceFactory.getUserService();
 	User user = userService.getCurrentUser();
 	PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -52,17 +57,15 @@ public class ConvertData {
 	
 	public void convertDataJoinNetwork(){
 		try{
-			String mac = null;
-	        String ip = null;
 	        //db = new Database();
 	        mac = data.substring(7, 9);
 	        int mac_int = Integer.valueOf(mac, 16).intValue();
 	        ip = data.substring(3, 7);
 	        String message = date +": Sensor " + mac+" with Ip:" + ip + " has joined network!";
 	        Greeting greeting = new Greeting(user, message, date);
-	        DataSensor dataSensor = new DataSensor(user, data, date, mac, ip, 0, 0, "01");
+	        Node nodes = new Node(mac, ip, true);
 			try {
-				pm.makePersistent(dataSensor);
+				pm.makePersistent(nodes);
 				pm.makePersistent(greeting);
 			} 
 			catch(Exception ex) {System.out.println(ex.toString());}
@@ -99,8 +102,8 @@ public class ConvertData {
 	        else
 	        {
 	            //checkSensor = true;
-	            Node.Mac = mac;
-	            Node.Ip = ip;
+	            /*Node.Mac = mac;
+	            Node.Ip = ip;*/
 	            /*if (db.CheckSensor(mac) == "true")
 	            {
 	                db.setNetworkIpSensor(sensor.Mac, sensor.Ip);
@@ -118,9 +121,6 @@ public class ConvertData {
 	public void convertDataRD(){
 		try{
 			//conv. convertDataJoinNetwork();
-			float humi = 0;
-	        float temp = 0;
-	        float ener = 0;
 	        String mac = data.substring(7, 9);
 	        String ip = data.substring(3,7);
 			String hexd = data.substring(9, 13);
@@ -138,13 +138,61 @@ public class ConvertData {
 	        if (humi > 100) humi = 100;       				//cut if the value is outside of
 	        if (humi < 0.1) humi = 0;
 	
-	        Sensor.temperature = temp;
+	        /*Sensor.temperature = temp;
 	        Sensor.humidity = humi;
-	        Sensor.energy = ener;
+	        Sensor.energy = ener;*/
 	        
 			DataSensor dataSensor = new DataSensor(user, data, date, mac, ip, temp, humi, "01");
 			pm.makePersistent(dataSensor);			
 		}
 		catch(Exception ex) {System.out.println(ex.toString());}
+	}
+	
+	public void convertStateSensor(){
+		try
+        {
+            mac = data.substring(7, 9);
+            stateSensor = data.substring(9, 11);
+			if (stateSensor.equals("02"))
+	        {
+	            String msg = "(" + date + "):Warning fire risk at node " + mac;
+	            Greeting greeting = new Greeting(user, msg, date);
+				try {
+					pm.makePersistent(greeting);
+				} 
+				catch(Exception ex) {System.out.println(ex.toString());}
+	
+	        }
+	        else if (stateSensor.equals("03"))
+	        {
+	            String msg = "(" + date + "):Low Energy at node " + mac;
+	            Greeting greeting = new Greeting(user, msg, date);
+				try {
+					pm.makePersistent(greeting);
+				} 
+				catch(Exception ex) {System.out.println(ex.toString());}
+	        }
+	        else
+	        {
+	            String msg = "(" + date + "): Detected intrusion at node" + mac;
+	            Greeting greeting = new Greeting(user, msg, date);
+				try {
+					pm.makePersistent(greeting);
+				} 
+				catch(Exception ex) {System.out.println(ex.toString());}
+	        }
+        }
+        catch (Exception ex){}
+	}
+	
+	public void convertInformationSleep(){
+        mac = data.substring(3,5);
+		Gateway_Shared.changeActivationNode(mac, false);
+		String msg = "(" + date + "):" + mac +" in sleep mode";
+        Greeting greeting = new Greeting(user, msg, date);
+		try {
+			pm.makePersistent(greeting);
+		} 
+		catch(Exception ex) {}
 	}
 }
