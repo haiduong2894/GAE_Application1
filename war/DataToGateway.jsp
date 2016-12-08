@@ -12,7 +12,7 @@
 	    //User user = userService.getCurrentUser();
 		//response.setIntHeader("Refresh", 1);
 	    PersistenceManager pm = PMF.get().getPersistenceManager();
-	    String query = "select from " + Command.class.getName();
+	    String query = "select from " + Command.class.getName() + " order by date desc range 0,1";
 	    List<Command> commands = (List<Command>) pm.newQuery(query).execute();
 	    for (Command cmd : commands) {
 	%>

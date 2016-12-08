@@ -14,8 +14,8 @@
 	    User user = userService.getCurrentUser();
 		//response.setIntHeader("Refresh", 1);
 	   	PersistenceManager pm = PMF.get().getPersistenceManager();
-	    //String query = "select from " + DataSensor.class.getName() + " order by date desc range 0,10";
-	    String query = "select from " + DataSensor.class.getName();
+	    String query = "select from " + DataSensor.class.getName() + " order by date desc range 0,20";
+	    //String query = "select from " + DataSensor.class.getName();
 	    List<DataSensor> dataSensors = (List<DataSensor>) pm.newQuery(query).execute();
 	%>
 	<table border="1" id="tableData">

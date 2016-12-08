@@ -8,12 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.apphosting.utils.config.ApplicationXml.Modules.Web;
-import com.haiduong.gaeapplication.Gateway.Actor;
 import com.haiduong.gaeapplication.Gateway.Node;
-import com.haiduong.gaeapplication.Gateway.Sensor;
-import com.sun.java.swing.plaf.windows.resources.windows;
-import com.sun.java.swing.plaf.windows.resources.windows_zh_CN;
 
 public class ConvertData {
 	HttpServletRequest req;
@@ -55,15 +50,18 @@ public class ConvertData {
 		System.out.println("Id:"+id+"\r\nData:"+data);
 	}
 	
+	//message when node join to network 
 	public void convertDataJoinNetwork(){
 		try{
 	        //db = new Database();
+			//System.out.println(Gateway_Shared.checkNodeExist("32"));
+			//System.out.println(Gateway_Shared.checkActive("32"));
 	        mac = data.substring(7, 9);
 	        int mac_int = Integer.valueOf(mac, 16).intValue();
 	        ip = data.substring(3, 7);
 	        String message = date +": Sensor " + mac+" with Ip:" + ip + " has joined network!";
 	        Greeting greeting = new Greeting(user, message, date);
-	        Node nodes = new Node(mac, ip, true);
+	        Node nodes = new Node(mac, ip, true, -1, -1,"01");
 			try {
 				pm.makePersistent(nodes);
 				pm.makePersistent(greeting);
@@ -118,6 +116,7 @@ public class ConvertData {
 	    catch (Exception ex){}
 	}
 	
+	//humidity-temperature message
 	public void convertDataRD(){
 		try{
 			//conv. convertDataJoinNetwork();
@@ -148,6 +147,30 @@ public class ConvertData {
 		catch(Exception ex) {System.out.println(ex.toString());}
 	}
 	
+	//position messages
+	public void convertDataPS(){
+		try{
+	        String mac = data.substring(7, 9);
+	        String ip = data.substring(3,7);
+	        String lat = data.substring(9,19);
+	        String lng = data.substring(19,29);
+	        
+	        double lat_d = Double.parseDouble(lat);
+	        double lng_d = Double.parseDouble(lng);
+	        
+	        String message = date +": Update position sensor " + mac+" with Latitude:" + lat + "    Longitude:" + lng;
+	        Greeting greeting = new Greeting(user, message, date);
+	        pm.makePersistent(greeting);
+	        if(Gateway_Shared.checkNodeExist(mac)) Gateway_Shared.updatePosition(mac,lat_d,lng_d);
+	        else {
+	        	Node nod = new Node(mac, ip, true, lat_d, lng_d, "01");
+				pm.makePersistent(nod);
+	        }			
+		}
+		catch(Exception ex) {System.out.println(ex.toString());}
+	}
+		
+	//convert state update messages
 	public void convertStateSensor(){
 		try
         {
@@ -185,6 +208,7 @@ public class ConvertData {
         catch (Exception ex){}
 	}
 	
+	//convert sleep message
 	public void convertInformationSleep(){
         mac = data.substring(3,5);
 		Gateway_Shared.changeActivationNode(mac, false);

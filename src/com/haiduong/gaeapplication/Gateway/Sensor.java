@@ -36,8 +36,8 @@ public class Sensor extends Node {
     /// Trang thai cua sensor
     /// </summary>
     
-    public Sensor(String mac, String ip,boolean active, float temp, float humid, float ener){
-    	super(mac, ip, active);
+    public Sensor(String mac, String ip,boolean active, float lat, float lng, String region, float temp, float humid, float ener){
+    	super(mac, ip, active, lat, lng, region);
     	this.temperature = temp;
     	this.humidity = humid;
     	this.energy = ener;    		

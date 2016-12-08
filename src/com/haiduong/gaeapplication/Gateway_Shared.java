@@ -5,9 +5,19 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 
 import com.haiduong.gaeapplication.Gateway.Node;
-import com.sun.java.swing.plaf.windows.resources.windows;
 
 public class Gateway_Shared {
+	public static boolean checkActive(String mac){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+	    String query = "select from " + Node.class.getName();
+	    List<Node> nodes = (List<Node>) pm.newQuery(query).execute();
+	    for (Node dt : nodes){
+	    	if(dt.getMac().equals(mac)) 
+	    		return dt.getActive();	    							
+	    }
+		return false;
+	}
+	
 	public static String getStatus(String mac){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 	    String query = "select from " + DataSensor.class.getName();
@@ -28,7 +38,7 @@ public class Gateway_Shared {
 	    		dt.setStatus(status);    							
 	    }
 	}
-	public boolean checkNodeExist(String mac){
+	public static boolean checkNodeExist(String mac){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		String query = "select from " + Node.class.getName();
 	    List<Node> nodes = (List<Node>) pm.newQuery(query).execute();
@@ -47,5 +57,19 @@ public class Gateway_Shared {
 	    		nd.setActive(status);
 	    	}    							
 	    }	    
-	}	
+	}
+
+	public static void updatePosition(String mac, double lat, double lng) {
+		// TODO Auto-generated method stub
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+	    String query = "select from " + Node.class.getName();
+	    List<Node> nodes = (List<Node>) pm.newQuery(query).execute();
+	    for (Node nd : nodes){
+	    	if(nd.getMac().equals(mac)) {
+	    		nd.setLat(lat);
+	    		nd.setLng(lng);
+	    	}    							
+	    }
+	}
+	
 }

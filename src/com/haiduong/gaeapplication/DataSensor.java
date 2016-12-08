@@ -39,6 +39,7 @@ public class DataSensor {
     @Persistent
     private String status;
     
+    
     public DataSensor(User author, String content, Date date, String mac, String ip, float temp, float humid, String status) {
     	//super(author, content, date);
     	this.author = author;
@@ -66,6 +67,7 @@ public class DataSensor {
     public String getStatus(){
     	return status;
     }
+       
     public void setMac(String mac) {
         this.mac = mac;
     }
@@ -81,10 +83,11 @@ public class DataSensor {
     public void setHumid(float humid) {
         this.humid = humid;
     }
-    
     public void setStatus(String status){
     	this.status = status;
     }
+     
+    
     
     public Long getId() {
         return id;
@@ -113,4 +116,5 @@ public class DataSensor {
     public void setDate(Date date) {
         this.date = date;
     }
+    
 }

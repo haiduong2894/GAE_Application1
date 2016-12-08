@@ -4,9 +4,8 @@ public class Actor extends Node{
 	
 	 public static boolean statusActor;
 	 
-	 public Actor(String mac, String ip, boolean active){
-	    	super(mac, ip, active);    		
-	    	
+	 public Actor(String mac, String ip, boolean active,float lat, float lng, String region){
+	    	super(mac, ip, active, lat, lng, region);		    	
 	    }
 	 public String commandOnActor(int van, String ip)
      {

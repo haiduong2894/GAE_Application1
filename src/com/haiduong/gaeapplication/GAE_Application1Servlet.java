@@ -11,7 +11,6 @@ import javax.servlet.http.*;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.mysql.jdbc.Connection;
 
 
 @SuppressWarnings("serial")
@@ -20,6 +19,29 @@ public class GAE_Application1Servlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Hello, world");
 		resp.getWriter().println("Nguyen Hai DUong");
+		String page = req.getParameter("id");
+		resp.getWriter().println(page);
+		switch(page)
+		{
+			case "Main":
+				resp.sendRedirect("login.jsp");
+				break;
+			case "Map":
+				resp.sendRedirect("tabMap.jsp");
+				break;
+			case "Report":
+				resp.sendRedirect("tabReport.jsp");
+				break;
+			case "About":
+				resp.sendRedirect("tabAbout.jsp");
+				break;
+			case "Game":
+				resp.sendRedirect("gameMap.jsp");
+				break;
+			default:
+					break;				
+			
+		}
 		///connect to database
 		/*try{
 			Class.forName("com.mysql.jdbc.Driver");
